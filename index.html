@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sandbox</title>
+    <style>
+      :root {
+        --find-me: red;
+        --background: rgb(5, 10, 24);
+        --border: rgb(20, 26, 40);
+        --color: #e9e9e9;
+        --highlight-color: rgba(255, 217, 0, 0.8);
+      }
+
+      body {
+        margin: 0px;
+        padding: 0px;
+        /* Without this, an element with (h/w) means any padding & border, will
+  increase the total space required by the element. Setting everything to
+  `border-box` is recommended as it includes padding & border in now total
+  element (h/w) needed in its position. Recommended global setting! */
+        box-sizing: border-box;
+        background-color: var(--background);
+
+        height: 100vh;
+        overflow: hidden;
+
+        /* Flex 💪🏻 main/container in column for (navigation) and (main) */
+        display: flex;
+        flex-direction: column;
+      }
+
+      h1,
+      h2,
+      h3,
+      a,
+      p,
+      span {
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--color);
+      }
+      a {
+        text-decoration: none;
+      }
+      a:hover {
+        color: var(--highlight-color);
+        filter: drop-shadow(0px 0px 24px var(--highlight-color));
+      }
+
+      /* Flex 💪🏻 sub-container configuration */
+      nav {
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid var(--border);
+      }
+      /* Ensure each section: */
+      .nav-section {
+        /* background: var(--find-me); */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 3rem 2rem;
+        border-left: 1px solid var(--border);
+      }
+      /* These sections will flex to (1 / 3) */
+      #nav-logo-section {
+        /* flex-basis: calc(100% / 3);  */
+        flex-basis: calc(100% * (1 / 3)); /* means its one of the third(s) */
+        justify-content: flex-start;
+      }
+      /* These sections will grow to take remaining space */
+      #nav-social-section,
+      #nav-contact-section {
+        flex-grow: 1;
+      }
+      /* This wrapping section grows to take remaining space */
+      #nav-mobile-section {
+        flex-basis: calc(100% * (2 / 3)); /* means its two of the third(s) */
+        /* background: var(--find-me); */
+        /* center content: */
+        display: flex;
+        flex-direction: row;
+      }
+
+      #nav-logo-section {
+        justify-content: flex-start;
+      }
+      #nav-logo-section > a > i {
+        font-size: 2.5rem;
+      }
+      #nav-link-section {
+        flex-basis: 50%;
+        gap: 6rem;
+      }
+      #nav-social-section {
+        gap: 3rem;
+      }
+
+      /* Flex 💪🏻 sub-container configuration */
+      /* Ensure it takes all remaining vertical space by the `body` Flexbox */
+      main {
+        flex-grow: 1;
+        position: relative;
+        overflow: hidden; /* Prevent other article slides form 🤮 */
+      }
+
+      /* Grid 💪🏻 main/container configuration for each article */
+      main > article {
+        display: grid;
+        height: 100%;
+        width: 100%;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: 2fr 1fr;
+      }
+      /* Change `static` positioning on our article so we set them free 🕊️. */
+      /* Free 🕊️ them from default standard DOM flow constraints "in-flow". */
+      /* Remember! the body has an `overflow`, toggle this to see setup. */
+      main > article {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        transition: transform 400ms ease;
+      }
+
+      /* Our `data` attribute is used as selector with the following styles: */
+      main > article[data-status="inactive"] {
+        transform: translateX(-100%);
+        transition: none;
+      }
+      main > article[data-status="active"] {
+        transform: translateX(0%);
+        /* transition: none; */
+      }
+      main > article[data-status="before"] {
+        transform: translateX(-100%);
+        /* transition: none; */
+      }
+      main > article[data-status="becoming-active-from-left"] {
+        transform: translateX(100%);
+        transition: none;
+      }
+      main > article[data-status="after"] {
+        transform: translateX(100%);
+        /* transition: none; */
+      }
+      main > article[data-status="becoming-active-from-right"] {
+        transform: translateX(-100%);
+        transition: none;
+      }
+
+      main > article:first-child > .article-image-section {
+        background-image: url("https://images.unsplash.com/photo-1588771930296-88c2cb03f386?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60");
+      }
+      main > article:nth-child(2) > .article-image-section {
+        background-image: url("https://images.unsplash.com/photo-1590540180006-36971c22e35c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60");
+      }
+      main > article:nth-child(3) > .article-image-section {
+        background-image: url("https://images.unsplash.com/photo-1590540179493-7f1414013794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=800&q=60");
+      }
+      main > article:nth-child(4) > .article-image-section {
+        background-image: url("https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDExfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60");
+      }
+
+      /* Each article section is a Flex 💪🏻 child within their parent article */
+      /* Subsequently each parent article is a child/grid item */
+      main > article > .article-section {
+        height: 100%;
+        display: flex;
+      }
+      main > article > .article-image-section {
+        background-position: center;
+        background-size: cover;
+        opacity: 0.5;
+      }
+      main > article > .article-description-section {
+        /* background: var(--find-me); */
+        border-left: 1px solid var(--border);
+        flex-direction: column;
+        justify-content: center;
+        padding: 0rem 2rem;
+      }
+      main > article > .article-description-section > p {
+        color: rgb(255, 255, 255, 0.75);
+      }
+
+      main > article > .article-title-section {
+        /* background: var(--find-me); */
+        border-top: 1px solid var(--border);
+        align-items: center;
+        justify-content: space-between;
+        padding: 2rem 4rem;
+      }
+      main > article > .article-title-section h2 {
+        font-family: "Montserrat";
+        color: var(--color);
+        font-weight: bolder;
+        font-size: 2rem;
+        text-transform: uppercase;
+        flex-basis: 50%;
+      }
+      main > article > .article-title-section > i {
+        font-size: 3rem;
+      }
+      main > article > .article-title-section > i:hover {
+        color: var(--highlight-color);
+        filter: drop-shadow(0px 0px 24px var(--highlight-color));
+      }
+      main > article > .article-title-section * {
+        color: white;
+      }
+
+      main > article > .article-nav-section > .article-nav-button {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: rgb(255, 255, 255, 0.75);
+        font-size: 3rem;
+        cursor: pointer;
+        border-left: 1px solid var(--border);
+        border-top: 1px solid var(--border);
+      }
+      main > article > .article-nav-section > .article-nav-button:hover {
+        background-color: rgba(255, 255, 255, 0.025);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Step 1) Flex column (navigation) -->
+    <nav>
+      <div id="nav-logo-section" class="nav-section">
+        <a href="#">
+          <i class="fa-light fa-chair-office"></i>
+        </a>
+      </div>
+      <div id="nav-mobile-section">
+        <div id="nav-link-section" class="nav-section">
+          <a href="#">ABOUT</a>
+          <a href="#">WORK</a>
+        </div>
+        <div id="nav-social-section" class="nav-section">
+          <a href="#">
+            <i class="fa-brands fa-twitter"></i>
+          </a>
+          <a href="#" target="_blank">
+            <i class="fa-brands fa-facebook"></i>
+          </a>
+          <a href="#">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+        </div>
+        <div id="nav-contact-section" class="nav-section">
+          <a href="#">CONTACT</a>
+        </div>
+      </div>
+    </nav>
+    <!-- Step 2) Flex column (main) ensure it takes remaining space -->
+    <main>
+      <article data-index="0" data-status="active" class="slide">
+        <div class="article-image-section article-section"></div>
+        <div class="article-description-section article-section">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
+            qui veritatis consequatur necessit.
+          </p>
+        </div>
+        <div class="article-title-section article-section">
+          <h2>Black Sheep Barbers</h2>
+          <i class="fa-light fa-plus-large"></i>
+        </div>
+        <div class="article-nav-section article-section">
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleDecrease()"
+          >
+            <i class="fa-light fa-arrow-left-long"></i>
+          </button>
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleIncrease()"
+          >
+            <i class="fa-light fa-arrow-right-long"></i>
+          </button>
+        </div>
+      </article>
+      <article data-index="1" data-status="inactive" class="slide">
+        <div class="article-image-section article-section"></div>
+        <div class="article-description-section article-section">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
+            qui veritatis consequatur necessit.
+          </p>
+        </div>
+        <div class="article-title-section article-section">
+          <h2>Look sharp at our shop</h2>
+          <i class="fa-light fa-plus-large"></i>
+        </div>
+        <div class="article-nav-section article-section">
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleDecrease()"
+          >
+            <i class="fa-light fa-arrow-left-long"></i>
+          </button>
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleIncrease()"
+          >
+            <i class="fa-light fa-arrow-right-long"></i>
+          </button>
+        </div>
+      </article>
+      <article data-index="2" data-status="inactive" class="slide">
+        <div class="article-image-section article-section"></div>
+        <div class="article-description-section article-section">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
+            qui veritatis consequatur necessit.
+          </p>
+        </div>
+        <div class="article-title-section article-section">
+          <h2>Vintage style modern cuts</h2>
+          <i class="fa-light fa-plus-large"></i>
+        </div>
+        <div class="article-nav-section article-section">
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleDecrease()"
+          >
+            <i class="fa-light fa-arrow-left-long"></i>
+          </button>
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleIncrease()"
+          >
+            <i class="fa-light fa-arrow-right-long"></i>
+          </button>
+        </div>
+      </article>
+      <article data-index="3" data-status="inactive" class="slide">
+        <div class="article-image-section article-section"></div>
+        <div class="article-description-section article-section">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum,
+            qui veritatis consequatur necessit.
+          </p>
+        </div>
+        <div class="article-title-section article-section">
+          <h2>Lets fix you up scruffy</h2>
+          <i class="fa-light fa-plus-large"></i>
+        </div>
+        <div class="article-nav-section article-section">
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleDecrease()"
+          >
+            <i class="fa-light fa-arrow-left-long"></i>
+          </button>
+          <button
+            class="article-nav-button"
+            type="button"
+            onclick="handleIncrease()"
+          >
+            <i class="fa-light fa-arrow-right-long"></i>
+          </button>
+        </div>
+      </article>
+    </main>
+    <script>
+      let activeIndex = 0;
+      const slides = document.getElementsByClassName("slide");
+
+      const handleDecrease = () => {
+        // #1 - Decrease the `activeIndex` position, if condition:
+        // If `activeIndex` is still greater than or equal to `>=` zero then we
+        // can decrease our `nextIndex` by the active position. If we at the end
+        // of the HTML collection, return to the last item in array with length.
+        let nextIndex;
+        if (activeIndex - 1 >= 0) nextIndex = activeIndex - 1;
+        else nextIndex = slides.length - 1;
+
+        // #2 - Query selectors `data-index` for all slides:
+        // Here we get the active slide & next via `data` attribute:
+        const activeSlide = document.querySelector(
+          `[data-index="${activeIndex}"]`
+        );
+        const nextSlide = document.querySelector(`[data-index="${nextIndex}"]`);
+
+        // #3 - Modify elements according to selector `data-status` styles:
+        activeSlide.dataset.status = "after";
+        nextSlide.dataset.status = "becoming-active-from-right";
+        // Switch nextSlide to 'active' with timeout delay to apply style.
+        setTimeout(() => {
+          nextSlide.dataset.status = "active";
+          // #4 - Here we keep the active index position to the next available.
+          // Above we return index to zero if active position, reaches the end.
+          // See css selector: `[data-status]` for more detail.
+          activeIndex = nextIndex;
+          // console.log(nextSlide.dataset.index);
+        });
+      };
+      const handleIncrease = () => {
+        // #1 - Increase the `activeIndex` position, if condition:
+        // If `activeIndex` is still lesser or equal to `<=` array length then
+        // we increase our `nextIndex` by the active position. Otherwise if we
+        // greater than the HTML collection, return to the start of the array.
+        let nextIndex;
+        if (activeIndex + 1 <= slides.length - 1) nextIndex = activeIndex + 1;
+        else nextIndex = 0;
+
+        // #2 - Query selectors `data-index` for all slides:
+        // Here we get the active slide & next via `data` attribute:
+        const activeSlide = document.querySelector(
+          `[data-index="${activeIndex}"]`
+        );
+        const nextSlide = document.querySelector(`[data-index="${nextIndex}"]`);
+        // #3 - Modify elements according to selector `data-status` styles:
+        activeSlide.dataset.status = "before";
+        nextSlide.dataset.status = "becoming-active-from-left";
+        // Switch nextSlide to 'active' with timeout delay to apply style.
+        setTimeout(() => {
+          nextSlide.dataset.status = "active";
+          // #4 - Here we keep the active index position to the next available.
+          // Above we return index to zero if active position, reaches the end.
+          // See css selector: `[data-status]` for more detail.
+          activeIndex = nextIndex;
+          // console.log(nextSlide.dataset.index);
+        });
+      };
+    </script>
+    <script src="https://kit.fontawesome.com/944eb371a4.js"></script>
+  </body>
+</html>
